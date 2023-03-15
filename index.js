@@ -6,8 +6,11 @@ const mongoose = require("mongoose");
 mongoose.connect(keys.mongoURI);
 require("./models/User"); // comes before require passport
 require("./services/passport");
+const bodyParser = require("body-parser");
 
 const app = express();
+
+app.use(bodyParser.json()); // parses the request and assigns to req.body property.
 
 app.use(
   cookieSession({
@@ -22,6 +25,8 @@ app.use(passport.session());
 const authRoutes = require("./routes/authRoutes");
 authRoutes(app);
 // require("./routes/authRoutes")(app) // same as the above 2 lines
+
+require("./routes/billingRoutes")(app);
 
 const PORT = process.env.PORT || 5500;
 app.listen(PORT);
